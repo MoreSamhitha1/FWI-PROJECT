@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FWI Predictor — Fire Risk Assessment</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="background-overlay"></div>
+  
+  <div class="container">
+    <div class="card">
+      <!-- Header Section -->
+      <header class="header">
+        <div class="icon-wrapper">
+          <span class="fire-icon">🔥</span>
+        </div>
+        <h1 class="title">Fire Weather Index Predictor</h1>
+        <p class="subtitle">Advanced AI-powered fire risk assessment system</p>
+        <div class="divider"></div>
+      </header>
+
+      <!-- Form Section -->
+      <form action="{{ url_for('predict') }}" method="POST" class="prediction-form">
+        <div class="form-section">
+          <h2 class="section-title">
+            <span class="section-icon">🌡️</span>
+            Environmental Parameters
+          </h2>
+          <div class="grid-fields">
+            <div class="field">
+              <label>Temperature <span class="unit">(°C)</span></label>
+              <input name="Temperature" type="number" step="any" placeholder="32.5" required>
+            </div>
+
+            <div class="field">
+              <label>Relative Humidity <span class="unit">(%)</span></label>
+              <input name="RH" type="number" step="any" placeholder="60" required>
+            </div>
+
+            <div class="field">
+              <label>Wind Speed <span class="unit">(km/h)</span></label>
+              <input name="Ws" type="number" step="any" placeholder="15" required>
+            </div>
+
+            <div class="field">
+              <label>Rainfall <span class="unit">(mm)</span></label>
+              <input name="Rain" type="number" step="any" placeholder="0.0" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2 class="section-title">
+            <span class="section-icon">📊</span>
+            Fire Weather Indices
+          </h2>
+          <div class="grid-fields">
+            <div class="field">
+              <label>FFMC <span class="info-tip" title="Fine Fuel Moisture Code">ⓘ</span></label>
+              <input name="FFMC" type="number" step="any" placeholder="85.4" required>
+            </div>
+
+            <div class="field">
+              <label>DMC <span class="info-tip" title="Duff Moisture Code">ⓘ</span></label>
+              <input name="DMC" type="number" step="any" placeholder="10.5" required>
+            </div>
+
+            <div class="field">
+              <label>DC <span class="info-tip" title="Drought Code">ⓘ</span></label>
+              <input name="DC" type="number" step="any" placeholder="30.2" required>
+            </div>
+
+            <div class="field">
+              <label>ISI <span class="info-tip" title="Initial Spread Index">ⓘ</span></label>
+              <input name="ISI" type="number" step="any" placeholder="5.6" required>
+            </div>
+
+            <div class="field">
+              <label>BUI <span class="info-tip" title="Buildup Index">ⓘ</span></label>
+              <input name="BUI" type="number" step="any" placeholder="12.3" required>
+            </div>
+
+            <div class="field">
+              <label>Region</label>
+              <select name="Region" required>
+                <option value="" disabled selected>Select region</option>
+                <option value="0">Karnataka</option>
+                <option value="1">Andhra Pradesh</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="button-wrapper">
+          <button type="submit" class="btn-primary">
+            <span class="btn-icon">🔍</span>
+            <span>Calculate Fire Risk</span>
+          </button>
+        </div>
+      </form>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-content">
+          <div class="model-info">
+            <span class="badge">Ridge Regression Model</span>
+            <span class="badge">StandardScaler Normalization</span>
+          </div>
+          <p class="footer-text">Providing accurate fire weather predictions for forest safety</p>
+        </div>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
