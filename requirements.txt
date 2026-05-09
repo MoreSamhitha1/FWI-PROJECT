@@ -1,0 +1,5 @@
+1.pandas
+2.matplotlib
+3.seaborn
+4.ipykernel
+5.numpy
