@@ -3,86 +3,273 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FWI Predictor — Fire Risk Assessment</title>
+  <title>FWI Tempest — Fire Weather Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <div class="background-overlay"></div>
-  
-  <div class="container">
-    <div class="card">
-      <!-- Header Section -->
-      <header class="header">
-        <div class="icon-wrapper">
-          <span class="fire-icon">🔥</span>
+ 
+  <!-- Animated Background -->
+  <div class="bg-canvas">
+    <div class="ember" style="--x:10%;--d:4s;--s:6px;--delay:0s"></div>
+    <div class="ember" style="--x:25%;--d:5s;--s:4px;--delay:1s"></div>
+    <div class="ember" style="--x:40%;--d:3.5s;--s:7px;--delay:0.5s"></div>
+    <div class="ember" style="--x:55%;--d:6s;--s:5px;--delay:2s"></div>
+    <div class="ember" style="--x:70%;--d:4.5s;--s:4px;--delay:1.5s"></div>
+    <div class="ember" style="--x:85%;--d:5.5s;--s:6px;--delay:0.8s"></div>
+    <div class="ember" style="--x:15%;--d:4s;--s:3px;--delay:3s"></div>
+    <div class="ember" style="--x:60%;--d:3s;--s:8px;--delay:2.5s"></div>
+    <div class="ember" style="--x:90%;--d:5s;--s:4px;--delay:1.2s"></div>
+    <div class="heat-wave"></div>
+    <div class="heat-wave" style="animation-delay:-3s;opacity:0.4"></div>
+  </div>
+ 
+  <!-- ── NAVBAR ── -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-fire">🔥</span>
+        <span class="logo-text">FWI<span class="logo-accent">TEMPEST</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#roles" class="nav-link">Key Roles</a></li>
+        <li>
+          <button class="nav-cta" id="openModalBtn">
+            <span>Predict Fire Risk</span>
+            <span class="cta-arrow">→</span>
+          </button>
+        </li>
+      </ul>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+ 
+  <!-- ── HERO ── -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-tag">AI-POWERED WILDFIRE INTELLIGENCE</div>
+      <h1 class="hero-title">
+        <span class="title-line line-1">FIRE</span>
+        <span class="title-line line-2">WEATHER</span>
+        <span class="title-line line-3">INDEX</span>
+      </h1>
+      <p class="hero-subtitle">
+        Real-time fire risk assessment powered by Ridge Regression models.<br>
+        Know the danger before the flame.
+      </p>
+      <div class="hero-actions">
+        <button class="btn-hero-primary" id="openModalBtn2">
+          <span class="btn-flame">🔥</span>
+          Predict Fire Risk Index
+        </button>
+        <a href="#about" class="btn-hero-ghost">Learn More ↓</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-val">4</span>
+          <span class="stat-label">Risk Levels</span>
         </div>
-        <h1 class="title">Fire Weather Index Predictor</h1>
-        <p class="subtitle">Advanced AI-powered fire risk assessment system</p>
-        <div class="divider"></div>
-      </header>
-
-      <!-- Form Section -->
-      <form action="{{ url_for('predict') }}" method="POST" class="prediction-form">
-        <div class="form-section">
-          <h2 class="section-title">
-            <span class="section-icon">🌡️</span>
-            Environmental Parameters
-          </h2>
-          <div class="grid-fields">
-            <div class="field">
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-val">10</span>
+          <span class="stat-label">Parameters</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat">
+          <span class="stat-val">AI</span>
+          <span class="stat-label">Ridge Model</span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="fire-ring ring-1"></div>
+      <div class="fire-ring ring-2"></div>
+      <div class="fire-ring ring-3"></div>
+      <div class="fire-orb">
+        <span class="orb-icon">🌡️</span>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ── ABOUT ── -->
+  <section class="section" id="about">
+    <div class="section-inner">
+      <div class="section-tag">WHAT IS FWI?</div>
+      <h2 class="section-heading">About the<br><em>Fire Weather Index</em></h2>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>The <strong>Fire Weather Index (FWI)</strong> is a globally recognised numeric rating system that measures the potential intensity of a wildfire based on weather and fuel moisture conditions. Developed by the Canadian Forest Service, it integrates multiple environmental factors to compute a single risk number.</p>
+          <p>FWI Tempest uses a trained <strong>Ridge Regression model</strong> with StandardScaler normalisation to predict the FWI score for any given set of meteorological inputs — giving forest officers, safety teams, and researchers an instant, data-driven fire risk assessment.</p>
+          <div class="about-badges">
+            <span class="pill">Ridge Regression</span>
+            <span class="pill">StandardScaler</span>
+            <span class="pill">Forest Fires Dataset India</span>
+          </div>
+        </div>
+        <div class="about-cards">
+          <div class="info-card">
+            <span class="info-card-icon">🌿</span>
+            <h4>Fuel Moisture</h4>
+            <p>FFMC, DMC and DC indices track moisture in fine fuels, duff layers and deep organic matter.</p>
+          </div>
+          <div class="info-card">
+            <span class="info-card-icon">💨</span>
+            <h4>Weather Dynamics</h4>
+            <p>Temperature, relative humidity, wind speed and rainfall all feed into the computation.</p>
+          </div>
+          <div class="info-card">
+            <span class="info-card-icon">📈</span>
+            <h4>Behaviour Indices</h4>
+            <p>ISI captures fire spread rate while BUI reflects fuel availability — together they define FWI.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ── KEY ROLES ── -->
+  <section class="section section-dark" id="roles">
+    <div class="section-inner">
+      <div class="section-tag">APPLICATIONS</div>
+      <h2 class="section-heading">Key Roles of<br><em>FWI Tempest</em></h2>
+      <div class="roles-grid">
+        <div class="role-card">
+          <div class="role-number">01</div>
+          <div class="role-icon">🛡️</div>
+          <h3>Forest Fire Prevention</h3>
+          <p>Equip forest rangers and fire departments with daily FWI scores to plan preventive measures before conditions turn critical.</p>
+          <div class="role-bar" style="--w:92%"></div>
+        </div>
+        <div class="role-card">
+          <div class="role-number">02</div>
+          <div class="role-icon">🏘️</div>
+          <h3>Community Safety Alerts</h3>
+          <p>Issue timely advisories to rural and forest-edge communities about elevated fire risk, enabling early evacuation readiness.</p>
+          <div class="role-bar" style="--w:78%"></div>
+        </div>
+        <div class="role-card">
+          <div class="role-number">03</div>
+          <div class="role-icon">🌱</div>
+          <h3>Agricultural Protection</h3>
+          <p>Help farmers and landowners safeguard crop fields by understanding when dry and windy conditions pose a serious burn risk.</p>
+          <div class="role-bar" style="--w:85%"></div>
+        </div>
+        <div class="role-card">
+          <div class="role-number">04</div>
+          <div class="role-icon">🔬</div>
+          <h3>Climate Research</h3>
+          <p>Support environmental scientists in analysing fire-weather patterns and correlating FWI trends with climate change indicators.</p>
+          <div class="role-bar" style="--w:70%"></div>
+        </div>
+        <div class="role-card">
+          <div class="role-number">05</div>
+          <div class="role-icon">🚒</div>
+          <h3>Emergency Response</h3>
+          <p>Aid incident commanders in resource allocation — positioning aerial water bombers and ground crews where risk is highest.</p>
+          <div class="role-bar" style="--w:95%"></div>
+        </div>
+        <div class="role-card">
+          <div class="role-number">06</div>
+          <div class="role-icon">📡</div>
+          <h3>Policy & Governance</h3>
+          <p>Provide government bodies and disaster management authorities with model-backed data for policy-making and risk zoning.</p>
+          <div class="role-bar" style="--w:68%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <!-- ── CTA STRIP ── -->
+  <section class="cta-strip">
+    <div class="cta-strip-inner">
+      <h2>Ready to assess fire risk?</h2>
+      <p>Enter your environmental readings and get an instant FWI prediction.</p>
+      <button class="btn-hero-primary" id="openModalBtn3">
+        <span class="btn-flame">🔥</span>
+        Launch Predictor
+      </button>
+    </div>
+  </section>
+ 
+  <!-- ── FOOTER ── -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-logo">
+        <span>🔥</span> FWI TEMPEST
+      </div>
+      <p class="footer-note">Ridge Regression · StandardScaler · Algerian Forest Dataset</p>
+      <p class="footer-copy">© 2026 FWI Tempest. Fire Weather Intelligence System.</p>
+    </div>
+  </footer>
+ 
+ 
+  <!-- ══════════════════════════════════
+       PREDICTION MODAL
+  ══════════════════════════════════ -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+ 
+      <div class="modal-header">
+        <span class="modal-fire">🔥</span>
+        <h2 class="modal-title">Fire Risk Predictor</h2>
+        <p class="modal-sub">Enter environmental parameters to calculate FWI score</p>
+      </div>
+ 
+      <form action="{{ url_for('predict') }}" method="POST" class="modal-form">
+ 
+        <div class="modal-section">
+          <h3 class="modal-section-title">🌡️ Environmental Parameters</h3>
+          <div class="modal-grid">
+            <div class="modal-field">
               <label>Temperature <span class="unit">(°C)</span></label>
-              <input name="Temperature" type="number" step="any" placeholder="32.5" required>
+              <input name="Temperature" type="number" step="any" placeholder="e.g. 32.5" required>
             </div>
-
-            <div class="field">
+            <div class="modal-field">
               <label>Relative Humidity <span class="unit">(%)</span></label>
-              <input name="RH" type="number" step="any" placeholder="60" required>
+              <input name="RH" type="number" step="any" placeholder="e.g. 60" required>
             </div>
-
-            <div class="field">
+            <div class="modal-field">
               <label>Wind Speed <span class="unit">(km/h)</span></label>
-              <input name="Ws" type="number" step="any" placeholder="15" required>
+              <input name="Ws" type="number" step="any" placeholder="e.g. 15" required>
             </div>
-
-            <div class="field">
+            <div class="modal-field">
               <label>Rainfall <span class="unit">(mm)</span></label>
-              <input name="Rain" type="number" step="any" placeholder="0.0" required>
+              <input name="Rain" type="number" step="any" placeholder="e.g. 0.0" required>
             </div>
           </div>
         </div>
-
-        <div class="form-section">
-          <h2 class="section-title">
-            <span class="section-icon">📊</span>
-            Fire Weather Indices
-          </h2>
-          <div class="grid-fields">
-            <div class="field">
-              <label>FFMC <span class="info-tip" title="Fine Fuel Moisture Code">ⓘ</span></label>
-              <input name="FFMC" type="number" step="any" placeholder="85.4" required>
+ 
+        <div class="modal-section">
+          <h3 class="modal-section-title">📊 Fire Weather Indices</h3>
+          <div class="modal-grid">
+            <div class="modal-field">
+              <label>FFMC <span class="tip" title="Fine Fuel Moisture Code">ⓘ</span></label>
+              <input name="FFMC" type="number" step="any" placeholder="e.g. 85.4" required>
             </div>
-
-            <div class="field">
-              <label>DMC <span class="info-tip" title="Duff Moisture Code">ⓘ</span></label>
-              <input name="DMC" type="number" step="any" placeholder="10.5" required>
+            <div class="modal-field">
+              <label>DMC <span class="tip" title="Duff Moisture Code">ⓘ</span></label>
+              <input name="DMC" type="number" step="any" placeholder="e.g. 10.5" required>
             </div>
-
-            <div class="field">
-              <label>DC <span class="info-tip" title="Drought Code">ⓘ</span></label>
-              <input name="DC" type="number" step="any" placeholder="30.2" required>
+            <div class="modal-field">
+              <label>DC <span class="tip" title="Drought Code">ⓘ</span></label>
+              <input name="DC" type="number" step="any" placeholder="e.g. 30.2" required>
             </div>
-
-            <div class="field">
-              <label>ISI <span class="info-tip" title="Initial Spread Index">ⓘ</span></label>
-              <input name="ISI" type="number" step="any" placeholder="5.6" required>
+            <div class="modal-field">
+              <label>ISI <span class="tip" title="Initial Spread Index">ⓘ</span></label>
+              <input name="ISI" type="number" step="any" placeholder="e.g. 5.6" required>
             </div>
-
-            <div class="field">
-              <label>BUI <span class="info-tip" title="Buildup Index">ⓘ</span></label>
-              <input name="BUI" type="number" step="any" placeholder="12.3" required>
+            <div class="modal-field">
+              <label>BUI <span class="tip" title="Buildup Index">ⓘ</span></label>
+              <input name="BUI" type="number" step="any" placeholder="e.g. 12.3" required>
             </div>
-
-            <div class="field">
+            <div class="modal-field">
               <label>Region</label>
               <select name="Region" required>
                 <option value="" disabled selected>Select region</option>
@@ -92,27 +279,64 @@
             </div>
           </div>
         </div>
-
-        <!-- Submit Button -->
-        <div class="button-wrapper">
-          <button type="submit" class="btn-primary">
-            <span class="btn-icon">🔍</span>
-            <span>Calculate Fire Risk</span>
-          </button>
-        </div>
+ 
+        <button type="submit" class="modal-submit">
+          <span>🔍</span> Calculate Fire Risk Index
+        </button>
       </form>
-
-      <!-- Footer -->
-      <footer class="footer">
-        <div class="footer-content">
-          <div class="model-info">
-            <span class="badge">Ridge Regression Model</span>
-            <span class="badge">StandardScaler Normalization</span>
-          </div>
-          <p class="footer-text">Providing accurate fire weather predictions for forest safety</p>
-        </div>
-      </footer>
     </div>
   </div>
+ 
+ 
+  <script>
+    // ── Navbar scroll effect ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 60);
+    });
+ 
+    // ── Active nav link on scroll ──
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { threshold: 0.4 });
+    sections.forEach(s => observer.observe(s));
+ 
+    // ── Hamburger ──
+    const ham = document.getElementById('hamburger');
+    const navLinksEl = document.querySelector('.nav-links');
+    ham.addEventListener('click', () => {
+      ham.classList.toggle('open');
+      navLinksEl.classList.toggle('open');
+    });
+ 
+    // ── Modal open/close ──
+    const overlay = document.getElementById('modalOverlay');
+    const modal   = document.getElementById('modal');
+    const closeBtn = document.getElementById('modalClose');
+ 
+    function openModal() {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+ 
+    ['openModalBtn','openModalBtn2','openModalBtn3'].forEach(id => {
+      document.getElementById(id)?.addEventListener('click', openModal);
+    });
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+  </script>
 </body>
 </html>
