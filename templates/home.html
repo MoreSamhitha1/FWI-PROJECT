@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FWI Result — Fire Risk Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="result-body">
+  <div class="bg-canvas">
+    <div class="heat-wave"></div>
+    <div class="heat-wave" style="animation-delay:-3s;opacity:0.3"></div>
+    <div class="ember" style="--x:8%;--d:4s;--s:5px;--delay:0s"></div>
+    <div class="ember" style="--x:30%;--d:5.5s;--s:4px;--delay:1s"></div>
+    <div class="ember" style="--x:65%;--d:3.8s;--s:7px;--delay:0.6s"></div>
+    <div class="ember" style="--x:88%;--d:4.5s;--s:5px;--delay:2s"></div>
+  </div>
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-inner">
+      <a href="{{ url_for('index') }}" class="nav-logo">
+        <span class="logo-fire">🔥</span>
+        <span class="logo-text">FWI<span class="logo-accent">TEMPEST</span></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="{{ url_for('index') }}#hero" class="nav-link">Home</a></li>
+        <li><a href="{{ url_for('index') }}#about" class="nav-link">About</a></li>
+        <li><a href="{{ url_for('index') }}#roles" class="nav-link">Key Roles</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main class="result-main">
+    <div class="result-container">
+      <div class="result-topline">
+        <span class="result-tag">ASSESSMENT COMPLETE</span>
+      </div>
+      <div class="result-hero risk-{{ risk_class }}">
+        <div class="result-hero-label">Fire Weather Index Score</div>
+        <div class="result-big-num risk-num-{{ risk_class }}">{{ prediction }}</div>
+        <div class="result-risk-badge badge-{{ risk_class }}">
+          {{ risk_label }} Risk
+        </div>
+      </div>
+      <div class="result-cols">
+        <div class="result-box advisory-box adv-{{ risk_class }}">
+          <div class="box-icon">⚠️</div>
+          <h3>Safety Advisory</h3>
+          <p>{{ advisory }}</p>
+        </div>
+        <div class="result-box scale-box">
+          <div class="box-icon">📊</div>
+          <h3>FWI Risk Scale</h3>
+          <div class="scale-list">
+            <div class="scale-row {% if risk_class == 'low' %}scale-active{% endif %}">
+              <span class="scale-dot dot-low"></span>
+              <span class="scale-name">Low</span>
+              <span class="scale-range">0 – 5</span>
+              <div class="scale-fill fill-low" style="width:20%"></div>
+            </div>
+            <div class="scale-row {% if risk_class == 'moderate' %}scale-active{% endif %}">
+              <span class="scale-dot dot-moderate"></span>
+              <span class="scale-name">Moderate</span>
+              <span class="scale-range">5 – 10</span>
+              <div class="scale-fill fill-moderate" style="width:50%"></div>
+            </div>
+            <div class="scale-row {% if risk_class == 'high' %}scale-active{% endif %}">
+              <span class="scale-dot dot-high"></span>
+              <span class="scale-name">High</span>
+              <span class="scale-range">10 – 20</span>
+              <div class="scale-fill fill-high" style="width:70%"></div>
+            </div>
+            <div class="scale-row {% if risk_class == 'extreme' %}scale-active{% endif %}">
+              <span class="scale-dot dot-extreme"></span>
+              <span class="scale-name">Extreme</span>
+              <span class="scale-range">20+</span>
+              <div class="scale-fill fill-extreme" style="width:100%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="result-action">
+        <button class="btn-hero-primary" id="openModalBtn">
+          <span class="btn-flame">🔄</span>
+          <span>Predict Again</span>
+        </button>
+      </div>
+      <p class="result-footer-note">Results generated using Ridge Regression · StandardScaler normalisation</p>
+    </div>
+  </main>
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+      <div class="modal-header">
+        <span class="modal-fire">🔥</span>
+        <h2 class="modal-title">Fire Risk Predictor</h2>
+        <p class="modal-sub">Enter environmental parameters to calculate FWI score</p>
+      </div>
+      <form action="{{ url_for('predict') }}" method="POST" class="modal-form">
+        <div class="modal-section">
+          <h3 class="modal-section-title">🌡️ Environmental Parameters</h3>
+          <div class="modal-grid">
+            <div class="modal-field">
+              <label>Temperature <span class="unit">(°C)</span></label>
+              <input name="Temperature" type="number" step="any" placeholder="e.g. 32.5" required>
+            </div>
+            <div class="modal-field">
+              <label>Relative Humidity <span class="unit">(%)</span></label>
+              <input name="RH" type="number" step="any" placeholder="e.g. 60" required>
+            </div>
+            <div class="modal-field">
+              <label>Wind Speed <span class="unit">(km/h)</span></label>
+              <input name="Ws" type="number" step="any" placeholder="e.g. 15" required>
+            </div>
+            <div class="modal-field">
+              <label>Rainfall <span class="unit">(mm)</span></label>
+              <input name="Rain" type="number" step="any" placeholder="e.g. 0.0" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-section">
+          <h3 class="modal-section-title">📊 Fire Weather Indices</h3>
+          <div class="modal-grid">
+            <div class="modal-field">
+              <label>FFMC <span class="tip" title="Fine Fuel Moisture Code">ⓘ</span></label>
+              <input name="FFMC" type="number" step="any" placeholder="e.g. 85.4" required>
+            </div>
+            <div class="modal-field">
+              <label>DMC <span class="tip" title="Duff Moisture Code">ⓘ</span></label>
+              <input name="DMC" type="number" step="any" placeholder="e.g. 10.5" required>
+            </div>
+            <div class="modal-field">
+              <label>DC <span class="tip" title="Drought Code">ⓘ</span></label>
+              <input name="DC" type="number" step="any" placeholder="e.g. 30.2" required>
+            </div>
+            <div class="modal-field">
+              <label>ISI <span class="tip" title="Initial Spread Index">ⓘ</span></label>
+              <input name="ISI" type="number" step="any" placeholder="e.g. 5.6" required>
+            </div>
+            <div class="modal-field">
+              <label>BUI <span class="tip" title="Buildup Index">ⓘ</span></label>
+              <input name="BUI" type="number" step="any" placeholder="e.g. 12.3" required>
+            </div>
+            <div class="modal-field">
+              <label>Region</label>
+              <select name="Region" required>
+                <option value="" disabled selected>Select region</option>
+                <option value="0">Karnataka</option>
+                <option value="1">Andhra Pradesh</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="modal-submit">
+          <span>🔍</span>
+          <span>Calculate Fire Risk Index</span>
+        </button>
+      </form>
+    </div>
+  </div>
+  <script>
+    const overlay  = document.getElementById('modalOverlay');
+    const closeBtn = document.getElementById('modalClose');
+    document.getElementById('openModalBtn').addEventListener('click', () => {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+    closeBtn.addEventListener('click', () => {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+  </script>
+</body>
+</html>
